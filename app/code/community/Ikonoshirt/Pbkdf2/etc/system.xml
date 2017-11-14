@@ -69,7 +69,7 @@
                         </salt_length>
                         <key_length translate="label comment" module="ikonoshirt_pbkdf2">
                             <label>Key Length</label>
-                            <comment>This is the binary value, the stored hex-string is two times that length!</comment>
+                            <comment>This is the octet value, the stored hex-string is two times that length</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
