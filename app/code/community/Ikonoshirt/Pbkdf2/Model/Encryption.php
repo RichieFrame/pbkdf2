@@ -41,8 +41,8 @@ class Ikonoshirt_Pbkdf2_Model_Encryption
     protected $_hashAlgorithm;
 
     /**
-     * pbkdf2 key length
-     * default 256
+     * pbkdf2 key length in octets
+     * default 64
      *
      * @var integer
      */
