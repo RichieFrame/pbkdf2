@@ -144,6 +144,7 @@ class Ikonoshirt_Pbkdf2_Model_Encryption
         ) . ':' .$salt;
     }
 
+
     /**
      * Validate hash against hashing method (with or without salt)
      *
@@ -176,6 +177,43 @@ class Ikonoshirt_Pbkdf2_Model_Encryption
         }
         Mage::throwException('Invalid hash.');
     }
+
+
+    /**
+     * Generate encoded digest in BPMHASH format
+     *
+     * @param string $plaintext
+     * @param string $salt
+     *
+     * @return string
+     */
+    protected function _bpmhashDigest($plaintext, $salt)
+    {
+        $digest = '';
+
+        if (function_exists('hash_pbkdf2')) {
+            $digest = $this->$_base64url_encode(hash_pbkdf2(
+                $this->_hashAlgorithm,
+                $this->_singleHash($this->_hashAlgorithm, $plaintext, true),
+                $salt,
+                $this->_iterations,
+                $this->_keyLength,
+                true
+            ));
+        } else {
+            $digest = $this->$_base64url_encode($this->_pbkdf2(
+                $this->_hashAlgorithm,
+                $this->_singleHash($this->_hashAlgorithm, $plaintext, true),
+                $salt,
+                $this->_iterations,
+                $this->_keyLength,
+                true
+            ));
+        }
+
+        return $digest;
+    }
+
 
     /**
      * PBKDF2 key derivation function as defined by RSA's PKCS #5:
@@ -244,6 +282,7 @@ class Ikonoshirt_Pbkdf2_Model_Encryption
         }
     }
 
+
     /**
      * Get random string (ported from Magento 2 with several changes)
      * UNTESTED
@@ -289,6 +328,7 @@ class Ikonoshirt_Pbkdf2_Model_Encryption
 
         return $rstr;
     }
+
 
     /**
      * Calculate a cryptographic hash using native PHP function instead of Magento hash()
