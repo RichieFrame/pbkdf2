@@ -289,3 +289,30 @@ class Ikonoshirt_Pbkdf2_Model_Encryption
 
         return $rstr;
     }
+
+    /**
+     * Calculate a cryptographic hash using native PHP function instead of Magento hash()
+     *
+     * @param string         $algorithm
+     * @param string         $data
+     * @param bool           $rawOutput = false
+     * @return string
+     */
+    protected function _singleHash($algorithm, $data, $rawOutput = false)
+    {
+        $ctx = hash_init($algorithm);
+        hash_update($ctx, $data);
+        return hash_final($ctx,true,$rawOutput);
+    }
+
+
+    /**
+     * Generate URL safe B64 encoded string
+     *
+     * @param string         $data
+     * @return string
+     */
+    protected function _base64url_encode($data)
+    {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+    }
