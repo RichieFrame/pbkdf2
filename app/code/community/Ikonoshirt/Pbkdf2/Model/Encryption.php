@@ -216,6 +216,42 @@ class Ikonoshirt_Pbkdf2_Model_Encryption
 
 
     /**
+     * Generate raw PBKDF2 digest
+     *
+     * @param string $plaintext
+     * @param string $salt
+     *
+     * @return string
+     */
+    protected function _pbkdf2Digest($plaintext, $salt)
+    {
+        $digest = '';
+
+        if (function_exists('hash_pbkdf2')) {
+            $digest = hash_pbkdf2(
+                $this->_hashAlgorithm,
+                $plaintext,
+                $salt,
+                $this->_iterations,
+                $this->_keyLength,
+                true
+            );
+        } else {
+            $digest = $this->_pbkdf2(
+                $this->_hashAlgorithm,
+                $plaintext,
+                $salt,
+                $this->_iterations,
+                $this->_keyLength,
+                true
+            );
+        }
+
+        return $digest;
+    }
+
+
+    /**
      * PBKDF2 key derivation function as defined by RSA's PKCS #5:
      * https://www.ietf.org/rfc/rfc2898.txt
      *
